@@ -89,6 +89,8 @@ These are the files that matter when you want to run or extend the project:
   This contains the app-facing feature preparation and model helper functions, including dataset loading and feature table assembly.
 - `04.GUI/feature_extraction.py`
   This contains the ECG preprocessing and fiducial/non-fiducial feature extraction logic used by the UI.
+- `06.Test/evaluate_samples.py`
+  This is the command-line validation entrypoint for the bundled sample records. It runs the defined and undefined test signals through all three model paths and prints a compact report.
 - `02.Preprocessing_and_FeaturesExtraction/*.ipynb`
   These are research notebooks and exploratory scripts. They document experimentation, but they are not the primary runtime path.
 - `03.Models/model.py`
@@ -128,6 +130,20 @@ streamlit run Home_Page.py
 ```
 
 Run the second form from inside `04.GUI`, or use the first form from the repository root.
+
+## Command-Line Validation
+
+You can validate the bundled test records without opening the UI:
+
+```powershell
+.\.venv\Scripts\python.exe .\06.Test\evaluate_samples.py
+```
+
+This evaluates the sample signals in `06.Test/Defined_Signals/` and `06.Test/Undefined/` against the three shipped model pipelines:
+
+- fiducial
+- non-fiducial
+- bonus non-fiducial
 
 ## Interface Preview
 
