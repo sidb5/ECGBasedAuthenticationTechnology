@@ -1,4 +1,5 @@
 import pickle
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -13,25 +14,28 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
+GUI_DIR = Path(__file__).resolve().parent
+REPO_ROOT = GUI_DIR.parent
+
 
 SUBJECT_RECORDS = [
-    "../01.Dataset/104/s0306lre",
-    "../01.Dataset/117/s0291lre",
-    "../01.Dataset/122/s0312lre",
-    "../01.Dataset/252/s0487_re",
-    "../01.Dataset/173/s0305lre",
-    "../01.Dataset/182/s0308lre",
-    "../01.Dataset/234/s0460_re",
-    "../01.Dataset/238/s0466_re",
-    "../01.Dataset/255/s0491_re",
-    "../01.Dataset/166/s0275lre",
+    "01.Dataset/104/s0306lre",
+    "01.Dataset/117/s0291lre",
+    "01.Dataset/122/s0312lre",
+    "01.Dataset/252/s0487_re",
+    "01.Dataset/173/s0305lre",
+    "01.Dataset/182/s0308lre",
+    "01.Dataset/234/s0460_re",
+    "01.Dataset/238/s0466_re",
+    "01.Dataset/255/s0491_re",
+    "01.Dataset/166/s0275lre",
 ]
 
 
 def load_subjects():
     subjects = []
     for record_path in SUBJECT_RECORDS:
-        patient = wfdb.rdrecord(record_path, channels=[1])
+        patient = wfdb.rdrecord(str(REPO_ROOT / record_path), channels=[1])
         subjects.append(processing(patient.p_signal[:, 0]))
     return subjects
 

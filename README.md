@@ -77,20 +77,67 @@ requirements.txt                         Root Python dependencies
 - Matplotlib
 - BioSPPy
 
-## Running The Demo
+## Entry Points
 
-Create an environment and install dependencies:
+These are the files that matter when you want to run or extend the project:
 
-```bash
+- `04.GUI/Home_Page.py`
+  This is the main Streamlit app entrypoint. Run this file with `streamlit run` to launch the interface.
+- `04.GUI/pages/Classification.py`
+  This is the classification page inside the Streamlit multipage app. It is loaded automatically by Streamlit when the app starts. You usually do not run this file directly.
+- `04.GUI/final_project.py`
+  This contains the app-facing feature preparation and model helper functions, including dataset loading and feature table assembly.
+- `04.GUI/feature_extraction.py`
+  This contains the ECG preprocessing and fiducial/non-fiducial feature extraction logic used by the UI.
+- `02.Preprocessing_and_FeaturesExtraction/*.ipynb`
+  These are research notebooks and exploratory scripts. They document experimentation, but they are not the primary runtime path.
+- `03.Models/model.py`
+  This is model experimentation code rather than the recommended application entrypoint.
+
+## Setup
+
+This repository now runs successfully with Python `3.13` in a local virtual environment on Windows.
+
+Create and activate a virtual environment from the repository root:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+Install dependencies:
+
+```powershell
+python -m pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 ```
 
-Launch the interface:
+## Launching The App
 
-```bash
-cd 04.GUI
+From the repository root, launch the Streamlit app with:
+
+```powershell
+.\.venv\Scripts\streamlit.exe run .\04.GUI\Home_Page.py
+```
+
+If you prefer to activate the environment first:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
 streamlit run Home_Page.py
 ```
+
+Run the second form from inside `04.GUI`, or use the first form from the repository root.
+
+## Interface Preview
+
+The current Streamlit interface looks like this:
+
+![ECG authentication home screen](./Capture1.PNG)
+
+![ECG authentication classification screen](./Capture2.PNG)
+
+## Using The Interface
 
 On the classification page, upload the ECG record files that share the same base name, typically:
 
@@ -106,6 +153,13 @@ The app then:
 - runs the corresponding classifier,
 - displays the predicted subject when confidence crosses the configured threshold,
 - and visualizes either fiducial landmarks or transformed feature components.
+
+## Development Notes
+
+- The repository contains research code and app code; the supported runtime path is the Streamlit app in `04.GUI/`.
+- The current dependency set includes `peakutils`, which is required indirectly by `biosppy`.
+- The bundled classifier `.pkl` files expect `scikit-learn==1.5.2`, so that version is pinned in the requirements files.
+- `04.GUI/final_project.py` now resolves dataset paths from the repository root, which makes helper imports work regardless of the shell working directory.
 
 ## Models In The UI
 
