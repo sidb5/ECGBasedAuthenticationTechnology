@@ -1,0 +1,13 @@
+pandas
+numpy
+matplotlib
+seaborn
+streamlit
+requests
+wfdb
+scipy
+pywavelets
+scikit-learn
+streamlit-lottie
+biosppy
+statsmodels

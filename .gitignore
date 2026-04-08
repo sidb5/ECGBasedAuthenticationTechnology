@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Streamlit / local runtime
+.streamlit/
+temp/
+
+# Notebook and training artifacts
+.ipynb_checkpoints/
+catboost_info/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
