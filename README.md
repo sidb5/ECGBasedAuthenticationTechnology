@@ -160,6 +160,18 @@ The app then:
 - The current dependency set includes `peakutils`, which is required indirectly by `biosppy`.
 - The bundled classifier `.pkl` files expect `scikit-learn==1.5.2`, so that version is pinned in the requirements files.
 - `04.GUI/final_project.py` now resolves dataset paths from the repository root, which makes helper imports work regardless of the shell working directory.
+- The bonus non-fiducial path has been hardened so malformed beat spans are skipped instead of crashing the UI during prediction.
+
+## Validation Snapshot
+
+The current codebase was smoke-tested against bundled sample records:
+
+- `06.Test/Defined_Signals/104/s0306lre`
+  Fiducial and bonus non-fiducial both identified subject `1` with very high confidence, and the non-fiducial DCT path also ranked subject `1` highest.
+- `06.Test/Undefined/166/s0275lre`
+  The app runs successfully, but this sample still receives non-trivial confidence from trained classes.
+
+This means the runtime path is stable, but the repository should still be treated as a biometric prototype rather than a calibrated open-set authentication system.
 
 ## Models In The UI
 

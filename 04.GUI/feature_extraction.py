@@ -171,12 +171,37 @@ def process_signal(denoised_signal, y_lfiltered):
 def process_qrs(denoised_signal, y_lfiltered1, window_smoothed_signal, qx, qy, sx, sy):
     # Thresholding (Get R, any value not the peak between Q and S is set to 0)
     #print(len(denoised_signal), len(y_lfiltered), len(window_smoothed_signal))
-    for i in range(len(qx)):
-        y_lfiltered1[qx[i]:sx[i]][y_lfiltered1[qx[i]:sx[i]]
-                                  != max(y_lfiltered1[qx[i]:sx[i]])] = 0
+    valid_pairs = min(len(qx), len(sx))
+    for i in range(valid_pairs):
+        start = int(qx[i])
+        end = int(sx[i])
+        if end <= start:
+            continue
+
+        qrs_slice = y_lfiltered1[start:end]
+        if len(qrs_slice) == 0:
+            continue
+
+        qrs_peak = np.max(qrs_slice)
+        qrs_slice[qrs_slice != qrs_peak] = 0
 
     # Remove any peaks that are not Rs
-    y_lfiltered1[y_lfiltered1 < max(y_lfiltered1)*0.65] = 0
+    max_filtered = np.max(y_lfiltered1) if len(y_lfiltered1) else 0
+    if max_filtered <= 0:
+        return (
+            np.array(qx),
+            np.array(qy),
+            np.array(sx),
+            np.array(sy),
+            np.array([]),
+            np.array([]),
+            np.array([]),
+            np.array([]),
+            np.array([]),
+            np.array([]),
+        )
+
+    y_lfiltered1[y_lfiltered1 < max_filtered * 0.65] = 0
 
     # Retrieve R
     Rx = []

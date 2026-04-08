@@ -84,9 +84,7 @@ def LR_classifier(X_train, y_train, filename):
 
 
 def data_frame_non(non_fid, label):
-    df = pd.DataFrame({})
-    for i in range(len(non_fid)):
-        df[i] = non_fid[i]
+    df = pd.DataFrame(np.asarray(non_fid).reshape(-1, 1)).T
     df["class"] = label
     return df
 
@@ -110,10 +108,7 @@ def create_data_frame_non_fid(non_fid_features_values):
 
 
 def data_frame(non_fid, label):
-    df = pd.DataFrame({})
-    for i in range(len(non_fid)):
-        df[i] = non_fid[i]
-    df = df.T
+    df = pd.DataFrame(non_fid)
     df["class"] = label
     return df
 
@@ -123,6 +118,11 @@ def non_fiducial_features_bonus_preprocessing(signals):
     non_fid_features_values = []
     for index, signal in enumerate(signals, start=1):
         non_fid_feature = non_fiducial_features_bonus(signal)
+        if not non_fid_feature:
+            empty_df = pd.DataFrame(columns=[*range(40), "class"])
+            non_fid_features.append(empty_df)
+            non_fid_features_values.append(empty_df.values)
+            continue
         non_fid_feature = data_frame(non_fid_feature, index)
         non_fid_features_values.append(non_fid_feature.values)
         non_fid_features.append(non_fid_feature)

@@ -127,6 +127,11 @@ if st.button("Predict"):
 
         else:
             _, values = get_features(processed_signal, index)
+            if len(values) == 0 or np.array(values).size == 0:
+                st.warning(
+                    "No stable beat segments were extracted for the bonus non-fiducial method."
+                )
+                st.stop()
             values = np.array(values).reshape(-1, 41)
             prediction = non_fid_bonus_model.predict_proba(values[:, :40])
             threshold_percentage = 0.95
